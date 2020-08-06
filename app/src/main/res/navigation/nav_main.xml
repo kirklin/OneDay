@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_main"
+    app:startDestination="@id/dayFragment">
+
+    <fragment
+        android:id="@+id/dayFragment"
+        android:name="name.lkk.oneday.DayFragment"
+        android:label="@string/app_name"
+        tools:layout="@layout/fragment_day">
+        <action
+            android:id="@+id/action_dayFragment_to_addDayFragment"
+            app:destination="@id/addDayFragment"
+            app:enterAnim="@anim/nav_default_enter_anim" />
+        <action
+            android:id="@+id/action_dayFragment_to_checkFragment"
+            app:destination="@id/checkFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addDayFragment"
+        android:name="name.lkk.oneday.AddDayFragment"
+        android:label="@string/LabelAddDay"
+        tools:layout="@layout/fragment_add_day" />
+    <fragment
+        android:id="@+id/checkFragment"
+        android:name="name.lkk.oneday.CheckFragment"
+        android:label="fragment_check"
+        tools:layout="@layout/fragment_check" >
+        <action
+            android:id="@+id/action_checkFragment_to_addCheckFragment"
+            app:destination="@id/addCheckFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addCheckFragment"
+        android:name="name.lkk.oneday.AddCheckFragment"
+        android:label="fragment_add_check"
+        tools:layout="@layout/fragment_add_check" />
+</navigation>
