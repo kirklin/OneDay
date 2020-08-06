@@ -16,6 +16,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.List;
 
 import name.lkk.oneday.adapter.CheckAdapter;
@@ -33,7 +35,7 @@ public class CheckFragment extends Fragment {
     RecyclerView recyclerView;
     CheckAdapter checkAdapter;
     long dayid=1;
-
+    FloatingActionButton floatingActionButton;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -100,6 +102,14 @@ public class CheckFragment extends Fragment {
                 }
             }
         });
+        floatingActionButton = requireActivity().findViewById(R.id.floatingActionButton2);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Check checks =new Check(dayid,"测试1");
 
+             checkViewModel.insertCheck(checks);
+            }
+        });
     }
 }
