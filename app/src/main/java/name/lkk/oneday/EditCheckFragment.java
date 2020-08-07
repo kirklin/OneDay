@@ -8,13 +8,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import name.lkk.oneday.databinding.FragmentEditCheckBinding;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link EditCheckFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class EditCheckFragment extends Fragment {
-
+    FragmentEditCheckBinding binding;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -59,6 +61,9 @@ public class EditCheckFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_edit_check, container, false);
+        binding = FragmentEditCheckBinding.inflate(inflater,container,false);
+        return binding.getRoot();
+
     }
+
 }

@@ -12,4 +12,6 @@
     <string name="buttonCheckSubmit">CheckSubmit</string>
     <string name="editTextCheckContent">请输入内容</string>
     <string name="editTextCheckTitle">请输入标题</string>
+    <string name="LabelAddCheck">AddCheck</string>
+    <string name="LabelEditCheck">EditCheck</string>
 </resources>

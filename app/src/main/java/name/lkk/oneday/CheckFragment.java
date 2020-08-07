@@ -35,6 +35,7 @@ public class CheckFragment extends Fragment {
     RecyclerView recyclerView;
     CheckAdapter checkAdapter;
     long dayid=1;
+
     FloatingActionButton floatingActionButton;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -90,6 +91,7 @@ public class CheckFragment extends Fragment {
         recyclerView = requireActivity().findViewById(R.id.CheckRecycleView);
         checkAdapter = new CheckAdapter();
         dayid = getArguments().getLong("arg_dayid");
+
         recyclerView.setLayoutManager(new GridLayoutManager(requireActivity(),2));
         recyclerView.setAdapter(checkAdapter);
         checkViewModel.getAllCheckLive(dayid).observe(requireActivity(), new Observer<List<Check>>() {
@@ -106,16 +108,11 @@ public class CheckFragment extends Fragment {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Check checks =new Check(dayid,"测试1");
-                checks.setContents("内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内" +
-                        "容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容" +
-                        "内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内" +
-                        "容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内" +
-                        "容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容" +
-                        "内容内容内容内容内容内容内容内容内容内容内容");
-             checkViewModel.insertCheck(checks);
+//
+               final Bundle bundle = new Bundle();
+               bundle.putLong("arg_dayid",dayid);
                 NavController navController = Navigation.findNavController(view);
-                navController.navigate(R.id.action_checkFragment_to_addCheckFragment);
+                navController.navigate(R.id.action_checkFragment_to_addCheckFragment,bundle);
             }
         });
     }

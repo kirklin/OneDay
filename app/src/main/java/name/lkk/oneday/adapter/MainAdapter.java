@@ -20,11 +20,11 @@ import java.util.List;
 import name.lkk.oneday.MainViewModel;
 import name.lkk.oneday.R;
 import name.lkk.oneday.data.Day;
+import name.lkk.oneday.databinding.FragmentAddDayBinding;
 
 
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MyViewHolder> {
     List<Day> alldays = new ArrayList<>();
-
 
     public void setAlldays(List<Day> alldays) {
         this.alldays = alldays;
@@ -39,24 +39,23 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MyViewHolder> 
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View itemView;
         itemView = layoutInflater.inflate(R.layout.cell_day_card, parent, false);
-
         return new MyViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder holder, int position) {
         Day day = alldays.get(position);
-
+        //传递DayId
         final Bundle bundle = new Bundle();
-        bundle.putLong("arg_dayid",day.getDayId());
+        bundle.putLong("arg_dayid", day.getDayId());
+
         holder.textViewNumber.setText(String.valueOf(position + 1));
         holder.day_title.setText(day.getTitle());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("kktest", "onClick: ");
                 NavController navController = Navigation.findNavController(view);
-                navController.navigate(R.id.action_dayFragment_to_checkFragment,bundle);
+                navController.navigate(R.id.action_dayFragment_to_checkFragment, bundle);
             }
         });
     }

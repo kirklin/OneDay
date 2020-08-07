@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import name.lkk.oneday.data.Day;
+import name.lkk.oneday.databinding.FragmentAddDayBinding;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,8 +28,7 @@ import name.lkk.oneday.data.Day;
  * create an instance of this fragment.
  */
 public class AddDayFragment extends Fragment {
-    private Button buttonSubmit;
-    private EditText editDayTitle;
+    FragmentAddDayBinding binding;
     MainViewModel mainViewModel;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -74,7 +74,8 @@ public class AddDayFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add_day, container, false);
+        binding = FragmentAddDayBinding.inflate(inflater,container,false);
+        return binding.getRoot();
     }
 
     @Override
@@ -82,12 +83,10 @@ public class AddDayFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         FragmentActivity activity = requireActivity();
         mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
-        buttonSubmit = activity.findViewById(R.id.button_add_submit);
-        editDayTitle = activity.findViewById(R.id.editTextDayTitle);
-        buttonSubmit.setEnabled(false);
-        editDayTitle.requestFocus();
+        binding.buttonAddSubmit.setEnabled(false);
+        binding.editTextDayTitle.requestFocus();
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(editDayTitle,0);
+        imm.showSoftInput(binding.editTextDayTitle,0);
         TextWatcher textWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -96,8 +95,8 @@ public class AddDayFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                String Day =editDayTitle.getText().toString().trim();
-                buttonSubmit.setEnabled(!Day.isEmpty());
+                String Day =binding.editTextDayTitle.getText().toString().trim();
+                binding.buttonAddSubmit.setEnabled(!Day.isEmpty());
             }
 
             @Override
@@ -105,11 +104,11 @@ public class AddDayFragment extends Fragment {
 
             }
         };
-        editDayTitle.addTextChangedListener(textWatcher);
-        buttonSubmit.setOnClickListener(new View.OnClickListener() {
+        binding.editTextDayTitle.addTextChangedListener(textWatcher);
+        binding.buttonAddSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String DayTitle = editDayTitle.getText().toString().trim();
+                String DayTitle = binding.editTextDayTitle.getText().toString().trim();
                 Day day = new Day(DayTitle);
                 mainViewModel.insertDay(day);
                 NavController navController = Navigation.findNavController(view);
