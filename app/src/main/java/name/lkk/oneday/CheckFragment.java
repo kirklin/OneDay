@@ -1,6 +1,9 @@
 package name.lkk.oneday;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -9,21 +12,14 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
 import name.lkk.oneday.adapter.CheckAdapter;
-import name.lkk.oneday.adapter.MainAdapter;
 import name.lkk.oneday.data.Check;
-import name.lkk.oneday.data.Day;
 
 /**
  * A simple {@link Fragment} subclass.
