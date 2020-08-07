@@ -26,15 +26,27 @@
     <fragment
         android:id="@+id/checkFragment"
         android:name="name.lkk.oneday.CheckFragment"
-        android:label="fragment_check"
-        tools:layout="@layout/fragment_check" >
+        android:label="CheckDiary"
+        tools:layout="@layout/fragment_check">
         <action
             android:id="@+id/action_checkFragment_to_addCheckFragment"
             app:destination="@id/addCheckFragment" />
+        <action
+            android:id="@+id/action_checkFragment_to_editCheckFragment"
+            app:destination="@id/editCheckFragment" />
     </fragment>
     <fragment
         android:id="@+id/addCheckFragment"
         android:name="name.lkk.oneday.AddCheckFragment"
         android:label="fragment_add_check"
         tools:layout="@layout/fragment_add_check" />
+    <fragment
+        android:id="@+id/editCheckFragment"
+        android:name="name.lkk.oneday.EditCheckFragment"
+        android:label="fragment_edit_check"
+        tools:layout="@layout/fragment_edit_check" >
+        <action
+            android:id="@+id/action_editCheckFragment_to_checkFragment"
+            app:destination="@id/checkFragment" />
+    </fragment>
 </navigation>

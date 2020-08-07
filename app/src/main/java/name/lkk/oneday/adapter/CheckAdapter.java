@@ -47,7 +47,7 @@ public class CheckAdapter extends RecyclerView.Adapter<CheckAdapter.MyViewHolder
             public void onClick(View view) {
                 Log.d("kktest", "onClick: ");
                 NavController navController = Navigation.findNavController(view);
-                navController.navigate(R.id.action_checkFragment_to_addCheckFragment);
+                navController.navigate(R.id.action_checkFragment_to_editCheckFragment);
             }
         });
     }

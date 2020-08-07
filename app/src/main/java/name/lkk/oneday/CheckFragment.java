@@ -114,6 +114,8 @@ public class CheckFragment extends Fragment {
                         "容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容" +
                         "内容内容内容内容内容内容内容内容内容内容内容");
              checkViewModel.insertCheck(checks);
+                NavController navController = Navigation.findNavController(view);
+                navController.navigate(R.id.action_checkFragment_to_addCheckFragment);
             }
         });
     }

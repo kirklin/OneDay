@@ -9,4 +9,7 @@
     <string name="LabelAddDay">AddDay</string>
     <string name="textViewCheckTitle">CheckTitle</string>
     <string name="textViewCheckContent">CheckContent</string>
+    <string name="buttonCheckSubmit">CheckSubmit</string>
+    <string name="editTextCheckContent">请输入内容</string>
+    <string name="editTextCheckTitle">请输入标题</string>
 </resources>
