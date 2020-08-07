@@ -22,6 +22,7 @@ import java.util.List;
 
 import name.lkk.oneday.adapter.MainAdapter;
 import name.lkk.oneday.data.Day;
+import name.lkk.oneday.databinding.FragmentDayBinding;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,12 +30,10 @@ import name.lkk.oneday.data.Day;
  * create an instance of this fragment.
  */
 public class DayFragment extends Fragment {
+    FragmentDayBinding binding;
 
     MainViewModel mainViewModel;
-    RecyclerView recyclerView;
     MainAdapter mainAdapter;
-
-    FloatingActionButton floatingActionButton;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -79,17 +78,17 @@ public class DayFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_day, container, false);
+        binding = FragmentDayBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
-        recyclerView = requireActivity().findViewById(R.id.MainRecycleView);
         mainAdapter = new MainAdapter();
-        recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
-        recyclerView.setAdapter(mainAdapter);
+        binding.MainRecycleView.setLayoutManager(new LinearLayoutManager(requireActivity()));
+        binding.MainRecycleView.setAdapter(mainAdapter);
 
         mainViewModel.getAllDayLive().observe(requireActivity(), new Observer<List<Day>>() {
             @Override
@@ -101,8 +100,7 @@ public class DayFragment extends Fragment {
                 }
             }
         });
-        floatingActionButton = requireActivity().findViewById(R.id.floatingActionButton);
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+        binding.floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 NavController navController = Navigation.findNavController(view);

@@ -10,16 +10,16 @@ public class Check {
     private long checkId;
     //关联Day
     private long dayCreatorId;
-    @ColumnInfo(name = "check_title")
+      @ColumnInfo(name = "check_title")
     private String title;
     @ColumnInfo(name = "check_contents")
     private String contents;
 
-    public Check(long dayCreatorId, String title) {
+    public Check(long dayCreatorId, String title, String contents) {
         this.dayCreatorId = dayCreatorId;
         this.title = title;
+        this.contents = contents;
     }
-
 
     public long getCheckId() {
         return checkId;

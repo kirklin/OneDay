@@ -19,9 +19,6 @@ public class MainViewModel extends AndroidViewModel {
     }
 
     LiveData<List<Day>> getAllDayLive(){return dayRepository.getAllDayLive();}
-    public long getDayId(long id){
-        return dayRepository.getDayId(id);
-    }
     LiveData<List<Day>> findSentencesWithPattern(String pattern){return dayRepository.findDaysWithPattern(pattern);}
 
     public void insertDay(Day... days){
@@ -29,5 +26,5 @@ public class MainViewModel extends AndroidViewModel {
     }
     public void deleteAllSentence(){
         dayRepository.deleteAllDay();
-}
+    }
 }

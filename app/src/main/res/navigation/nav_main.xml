@@ -38,13 +38,13 @@
     <fragment
         android:id="@+id/addCheckFragment"
         android:name="name.lkk.oneday.AddCheckFragment"
-        android:label="fragment_add_check"
+        android:label="@string/LabelAddCheck"
         tools:layout="@layout/fragment_add_check" />
     <fragment
         android:id="@+id/editCheckFragment"
         android:name="name.lkk.oneday.EditCheckFragment"
-        android:label="fragment_edit_check"
-        tools:layout="@layout/fragment_edit_check" >
+        android:label="@string/LabelEditCheck"
+        tools:layout="@layout/fragment_edit_check">
         <action
             android:id="@+id/action_editCheckFragment_to_checkFragment"
             app:destination="@id/checkFragment" />
