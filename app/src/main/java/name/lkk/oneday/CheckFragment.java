@@ -107,7 +107,12 @@ public class CheckFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Check checks =new Check(dayid,"测试1");
-
+                checks.setContents("内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内" +
+                        "容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容" +
+                        "内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内" +
+                        "容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内" +
+                        "容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容" +
+                        "内容内容内容内容内容内容内容内容内容内容内容");
              checkViewModel.insertCheck(checks);
             }
         });
