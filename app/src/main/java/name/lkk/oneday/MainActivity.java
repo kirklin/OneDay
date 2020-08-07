@@ -26,6 +26,5 @@ public class MainActivity extends AppCompatActivity {
         imm.hideSoftInputFromWindow(findViewById(R.id.fragment).getWindowToken(), 0);
         navController.navigateUp();
         return super.onSupportNavigateUp();
-
     }
 }
