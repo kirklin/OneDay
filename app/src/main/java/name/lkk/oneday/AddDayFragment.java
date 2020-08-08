@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -108,6 +109,8 @@ public class AddDayFragment extends Fragment {
                 String DayTitle = binding.editTextDayTitle.getText().toString().trim();
                 Day day = new Day(DayTitle);
                 mainViewModel.insertDay(day);
+                Toast toast = Toast.makeText(getContext(),"添加成功",Toast.LENGTH_SHORT);
+                toast.show();
                 NavController navController = Navigation.findNavController(view);
                 navController.navigateUp();
 

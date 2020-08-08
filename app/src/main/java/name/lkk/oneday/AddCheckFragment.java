@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -82,9 +83,9 @@ public class AddCheckFragment extends Fragment {
         FragmentActivity activity = requireActivity();
         checkViewModel = new ViewModelProvider(this).get(CheckViewModel.class);
         binding.buttonCheckSubmit.setEnabled(false);
-        binding.editTextCheckTitle.requestFocus();
+        binding.editTextCheckContent.requestFocus();
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(binding.editTextCheckTitle,0);
+        imm.showSoftInput(binding.editTextCheckContent,0);
         TextWatcher textWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -93,7 +94,7 @@ public class AddCheckFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                String Day =binding.editTextCheckTitle.getText().toString().trim();
+                String Day =binding.editTextCheckContent.getText().toString().trim();
                 binding.buttonCheckSubmit.setEnabled(!Day.isEmpty());
             }
 
@@ -102,7 +103,7 @@ public class AddCheckFragment extends Fragment {
 
             }
         };
-        binding.editTextCheckTitle.addTextChangedListener(textWatcher);
+        binding.editTextCheckContent.addTextChangedListener(textWatcher);
         binding.buttonCheckSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -110,6 +111,8 @@ public class AddCheckFragment extends Fragment {
                 String CheckContent = binding.editTextCheckContent.getText().toString();
                 Check check = new Check(getArguments().getLong("arg_dayid"),CheckTitle,CheckContent);
                 checkViewModel.insertCheck(check);
+                Toast toast = Toast.makeText(getContext(),"添加成功",Toast.LENGTH_SHORT);
+                toast.show();
                 NavController navController = Navigation.findNavController(view);
                 navController.navigateUp();
 

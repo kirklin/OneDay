@@ -85,7 +85,7 @@ public class DayFragment extends Fragment {
         binding.MainRecycleView.setLayoutManager(new LinearLayoutManager(requireActivity()));
         binding.MainRecycleView.setAdapter(mainAdapter);
 
-        mainViewModel.getAllDayLive().observe(requireActivity(), new Observer<List<Day>>() {
+        mainViewModel.getAllDayLive().observe(getViewLifecycleOwner(), new Observer<List<Day>>() {
             @Override
             public void onChanged(List<Day> days) {
                 int temp = mainAdapter.getItemCount();

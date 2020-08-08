@@ -22,7 +22,7 @@ import name.lkk.oneday.databinding.FragmentEditCheckBinding;
  */
 public class EditCheckFragment extends Fragment {
     FragmentEditCheckBinding binding;
-    Check thisCheck,changeCheck;
+    Check thisCheck;
 
     CheckViewModel checkViewModel;
     // TODO: Rename parameter arguments, choose names that match
@@ -81,9 +81,11 @@ public class EditCheckFragment extends Fragment {
         thisCheck = (Check) getArguments().getSerializable("check");
         binding.editTextCheckTitle.setText(thisCheck.getTitle());
         binding.editTextCheckContent.setText(thisCheck.getContents());
+
         binding.buttonEditCheckSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                binding.editTextCheckContent.requestFocus();
                 String CheckTitle = binding.editTextCheckTitle.getText().toString();
                 String CheckContent = binding.editTextCheckContent.getText().toString();
                 thisCheck.setTitle(CheckTitle);

@@ -90,7 +90,7 @@ public class CheckFragment extends Fragment {
 
         recyclerView.setLayoutManager(new GridLayoutManager(requireActivity(),2));
         recyclerView.setAdapter(checkAdapter);
-        checkViewModel.getAllCheckLive(dayid).observe(requireActivity(), new Observer<List<Check>>() {
+        checkViewModel.getAllCheckLive(dayid).observe(getViewLifecycleOwner(), new Observer<List<Check>>() {
             @Override
             public void onChanged(List<Check> checks) {
                 int temp = checkAdapter.getItemCount();
