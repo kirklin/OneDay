@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">OneDay</string>
+    <string name="day">天</string>
+    <string name="hello_blank_fragment">项目施工中</string>
+    <string name="ClearAllData">清空数据</string>
+    <string name="search">搜索</string>
+    <string name="insert_day_title">又是美好的一天</string>
+    <string name="buttonAddDay">提交</string>
+    <string name="LabelAddCheck">添加一个宫格</string>
+    <string name="LabelEditCheck">编辑</string>
+    <string name="buttonEditCheckSubmit">提交</string>
+    <string name="MenuItemClearData">清空数据</string>
+    <string name="Search">搜索</string>
+    <string name="buttonCheckSubmit">提交</string>
+    <string name="editTextCheckContent">请输入内容</string>
+    <string name="editTextCheckTitle">请输入标题</string>
+    <string name="LabelCheckDiary">宫格日记</string>
+    <string name="LabelAddDay">新的一天</string>
+    <string name="textViewCheckTitle">标题</string>
+    <string name="textViewCheckContent">内容</string>
+</resources>

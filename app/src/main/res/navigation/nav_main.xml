@@ -26,7 +26,7 @@
     <fragment
         android:id="@+id/checkFragment"
         android:name="name.lkk.oneday.CheckFragment"
-        android:label="CheckDiary"
+        android:label="@string/LabelCheckDiary"
         tools:layout="@layout/fragment_check">
         <action
             android:id="@+id/action_checkFragment_to_addCheckFragment"
