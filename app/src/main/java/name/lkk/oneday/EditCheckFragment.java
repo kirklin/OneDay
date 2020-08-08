@@ -1,16 +1,19 @@
 package name.lkk.oneday;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import name.lkk.oneday.data.Check;
 import name.lkk.oneday.databinding.FragmentEditCheckBinding;
@@ -22,7 +25,7 @@ import name.lkk.oneday.databinding.FragmentEditCheckBinding;
  */
 public class EditCheckFragment extends Fragment {
     FragmentEditCheckBinding binding;
-    Check thisCheck;
+    Check thisCheck,changeCheck;
 
     CheckViewModel checkViewModel;
     // TODO: Rename parameter arguments, choose names that match
@@ -79,9 +82,10 @@ public class EditCheckFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         checkViewModel = new ViewModelProvider(this).get(CheckViewModel.class);
         thisCheck = (Check) getArguments().getSerializable("check");
+//        changeCheck = new Check(thisCheck.getDayCreatorId(),thisCheck.getTitle(),thisCheck.getContents());
+//        changeCheck.setCheckId(thisCheck.getCheckId());
         binding.editTextCheckTitle.setText(thisCheck.getTitle());
         binding.editTextCheckContent.setText(thisCheck.getContents());
-
         binding.buttonEditCheckSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -91,8 +95,19 @@ public class EditCheckFragment extends Fragment {
                 thisCheck.setTitle(CheckTitle);
                 thisCheck.setContents(CheckContent);
                 checkViewModel.updateCheck(thisCheck);
-                Toast toast = Toast.makeText(getContext(),"修改成功",Toast.LENGTH_SHORT);
-                toast.show();
+//                changeCheck.setTitle(CheckTitle);
+//                changeCheck.setContents(CheckContent);
+//                checkViewModel.updateCheck(changeCheck);
+                Snackbar.make(binding.getRoot(),"修改成功",Snackbar.LENGTH_LONG)
+//                        .setAction("撤销", new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View view) {
+//                                checkViewModel.updateCheck(thisCheck);
+//                            }
+//                        })
+                        .show();
+                InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(binding.getRoot().getWindowToken(), 0);
 
                 NavController navController = Navigation.findNavController(view);
                 navController.navigateUp();

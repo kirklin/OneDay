@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -16,6 +15,8 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import name.lkk.oneday.data.Check;
 import name.lkk.oneday.databinding.FragmentAddCheckBinding;
@@ -111,8 +112,7 @@ public class AddCheckFragment extends Fragment {
                 String CheckContent = binding.editTextCheckContent.getText().toString();
                 Check check = new Check(getArguments().getLong("arg_dayid"),CheckTitle,CheckContent);
                 checkViewModel.insertCheck(check);
-                Toast toast = Toast.makeText(getContext(),"添加成功",Toast.LENGTH_SHORT);
-                toast.show();
+                Snackbar.make(binding.getRoot(),"添加成功",Snackbar.LENGTH_SHORT).show();
                 InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(binding.getRoot().getWindowToken(), 0);
                 NavController navController = Navigation.findNavController(view);
