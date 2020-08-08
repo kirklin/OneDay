@@ -2,6 +2,12 @@ package name.lkk.oneday;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -10,15 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-
 import name.lkk.oneday.data.Check;
-import name.lkk.oneday.data.Day;
 import name.lkk.oneday.databinding.FragmentAddCheckBinding;
 
 /**
@@ -83,7 +81,6 @@ public class AddCheckFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         FragmentActivity activity = requireActivity();
         checkViewModel = new ViewModelProvider(this).get(CheckViewModel.class);
-
         binding.buttonCheckSubmit.setEnabled(false);
         binding.editTextCheckTitle.requestFocus();
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -109,7 +106,7 @@ public class AddCheckFragment extends Fragment {
         binding.buttonCheckSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String CheckTitle = binding.editTextCheckTitle.getText().toString().trim();
+                String CheckTitle = binding.editTextCheckTitle.getText().toString();
                 String CheckContent = binding.editTextCheckContent.getText().toString();
                 Check check = new Check(getArguments().getLong("arg_dayid"),CheckTitle,CheckContent);
                 checkViewModel.insertCheck(check);

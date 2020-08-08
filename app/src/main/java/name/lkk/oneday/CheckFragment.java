@@ -107,6 +107,7 @@ public class CheckFragment extends Fragment {
 //
                final Bundle bundle = new Bundle();
                bundle.putLong("arg_dayid",dayid);
+
                 NavController navController = Navigation.findNavController(view);
                 navController.navigate(R.id.action_checkFragment_to_addCheckFragment,bundle);
             }

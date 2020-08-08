@@ -1,6 +1,6 @@
 package name.lkk.oneday.adapter;
 
-import android.util.Log;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,20 +38,19 @@ public class CheckAdapter extends RecyclerView.Adapter<CheckAdapter.MyViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        Check check = allchecks.get(position);
-//        holder.textViewNumber.setText(String.valueOf(position + 1));
+        final Check check = allchecks.get(position);
         holder.textViewCheckTitle.setText(check.getTitle());
         holder.textViewCheckContent.setText(check.getContents());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("kktest", "onClick: ");
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("check",check);
                 NavController navController = Navigation.findNavController(view);
-                navController.navigate(R.id.action_checkFragment_to_editCheckFragment);
+                navController.navigate(R.id.action_checkFragment_to_editCheckFragment,bundle);
             }
         });
     }
-
 
 
     @Override

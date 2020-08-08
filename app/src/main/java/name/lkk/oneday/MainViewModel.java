@@ -19,12 +19,12 @@ public class MainViewModel extends AndroidViewModel {
     }
 
     LiveData<List<Day>> getAllDayLive(){return dayRepository.getAllDayLive();}
-    LiveData<List<Day>> findSentencesWithPattern(String pattern){return dayRepository.findDaysWithPattern(pattern);}
+    LiveData<List<Day>> findDaysWithPattern(String pattern){return dayRepository.findDaysWithPattern(pattern);}
 
     public void insertDay(Day... days){
         dayRepository.insertDay(days);
     }
-    public void deleteAllSentence(){
+    public void deleteAllDay(){
         dayRepository.deleteAllDay();
     }
 }

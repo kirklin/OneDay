@@ -10,7 +10,7 @@ import java.util.List;
 public class CheckRepository {
     private CheckDao checkDao;
     private LiveData<List<Check>>allCheckLive;
-
+    private Check check;
     public CheckRepository(Context context) {
         AppDatabase appDatabase = AppDatabase.getDatabase(context.getApplicationContext());
         checkDao = appDatabase.getCheckDao();
@@ -20,7 +20,6 @@ public class CheckRepository {
         allCheckLive = checkDao.getAllCheckWithDay(dayid);
         return allCheckLive;
     }
-
     public void insertCheck(Check... checks){
         new InsertAsyncTask(checkDao).execute(checks);
     }

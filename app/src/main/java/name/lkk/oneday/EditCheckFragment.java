@@ -1,13 +1,18 @@
 package name.lkk.oneday;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+
+import name.lkk.oneday.data.Check;
 import name.lkk.oneday.databinding.FragmentEditCheckBinding;
 
 /**
@@ -17,6 +22,9 @@ import name.lkk.oneday.databinding.FragmentEditCheckBinding;
  */
 public class EditCheckFragment extends Fragment {
     FragmentEditCheckBinding binding;
+    Check thisCheck,changeCheck;
+
+    CheckViewModel checkViewModel;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -61,9 +69,33 @@ public class EditCheckFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        binding = FragmentEditCheckBinding.inflate(inflater,container,false);
+        binding = FragmentEditCheckBinding.inflate(inflater, container, false);
         return binding.getRoot();
 
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        checkViewModel = new ViewModelProvider(this).get(CheckViewModel.class);
+        thisCheck = (Check) getArguments().getSerializable("check");
+        binding.editTextCheckTitle.setText(thisCheck.getTitle());
+        binding.editTextCheckContent.setText(thisCheck.getContents());
+        binding.buttonEditCheckSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String CheckTitle = binding.editTextCheckTitle.getText().toString();
+                String CheckContent = binding.editTextCheckContent.getText().toString();
+                thisCheck.setTitle(CheckTitle);
+                thisCheck.setContents(CheckContent);
+                checkViewModel.updateCheck(thisCheck);
+                Toast toast = Toast.makeText(getContext(),"修改成功",Toast.LENGTH_SHORT);
+                toast.show();
+
+                NavController navController = Navigation.findNavController(view);
+                navController.navigateUp();
+            }
+        });
+
+    }
 }

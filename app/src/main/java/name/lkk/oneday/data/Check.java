@@ -4,8 +4,10 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
+
 @Entity
-public class Check {
+public class Check implements Serializable {
     @PrimaryKey(autoGenerate = true)
     private long checkId;
     //关联Day
@@ -20,6 +22,8 @@ public class Check {
         this.title = title;
         this.contents = contents;
     }
+
+
 
     public long getCheckId() {
         return checkId;

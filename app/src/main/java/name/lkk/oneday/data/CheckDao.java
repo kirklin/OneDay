@@ -20,7 +20,6 @@ public interface CheckDao {
     @Delete
     void deleteCheck(Check... checks);
 
-
     @Query("SELECT * FROM `check` WHERE dayCreatorId=:dayid ORDER BY checkId")
     LiveData<List<Check>>getAllCheckWithDay(long dayid);
 

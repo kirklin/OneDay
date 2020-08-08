@@ -18,9 +18,13 @@ public class CheckViewModel extends AndroidViewModel {
         super(application);
         checkRepository = new CheckRepository(application);
     }
-    LiveData<List<Check>> getAllCheckLive(long dayid){return checkRepository.getAllCheckWithDay(dayid);}
+    LiveData<List<Check>> getAllCheckLive(long dayid){
+        return checkRepository.getAllCheckWithDay(dayid);}
     public void insertCheck(Check... checks){
         checkRepository.insertCheck(checks);
+    }
+    public void updateCheck(Check... checks){
+        checkRepository.updateCheck(checks);
     }
 
 }
