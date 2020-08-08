@@ -5,13 +5,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
@@ -25,10 +30,10 @@ import name.lkk.oneday.databinding.FragmentDayBinding;
  * create an instance of this fragment.
  */
 public class DayFragment extends Fragment {
-    FragmentDayBinding binding;
-
-    MainViewModel mainViewModel;
-    MainAdapter mainAdapter;
+    private FragmentDayBinding binding;
+    private MainViewModel mainViewModel;
+    private MainAdapter mainAdapter;
+    private List<Day> allDays;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -89,6 +94,7 @@ public class DayFragment extends Fragment {
             @Override
             public void onChanged(List<Day> days) {
                 int temp = mainAdapter.getItemCount();
+                allDays = days;
                 mainAdapter.setAlldays(days);
                 if (temp != days.size()) {
                     mainAdapter.notifyDataSetChanged();
@@ -102,5 +108,28 @@ public class DayFragment extends Fragment {
                 navController.navigate(R.id.action_dayFragment_to_addDayFragment);
             }
         });
+
+        //滑动删除
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.START | ItemTouchHelper.END) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                final Day dayToDelete= allDays.get(viewHolder.getAdapterPosition());
+                mainViewModel.deleteDay(dayToDelete);
+                Snackbar.make(binding.getRoot(),"删除了一天",Snackbar.LENGTH_LONG)
+                        .setAction("撤销", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                mainViewModel.insertDay(dayToDelete);
+                            }
+                        }).show();
+            }
+        }).attachToRecyclerView(binding.MainRecycleView);
+
+
     }
 }

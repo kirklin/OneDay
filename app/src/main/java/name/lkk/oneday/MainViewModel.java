@@ -13,18 +13,30 @@ import name.lkk.oneday.data.DayRepository;
 
 public class MainViewModel extends AndroidViewModel {
     private DayRepository dayRepository;
+
     public MainViewModel(@NonNull Application application) {
         super(application);
         dayRepository = new DayRepository(application);
     }
 
-    LiveData<List<Day>> getAllDayLive(){return dayRepository.getAllDayLive();}
-    LiveData<List<Day>> findDaysWithPattern(String pattern){return dayRepository.findDaysWithPattern(pattern);}
+    LiveData<List<Day>> getAllDayLive() {
+        return dayRepository.getAllDayLive();
+    }
 
-    public void insertDay(Day... days){
+    LiveData<List<Day>> findDaysWithPattern(String pattern) {
+        return dayRepository.findDaysWithPattern(pattern);
+    }
+
+    public void insertDay(Day... days) {
         dayRepository.insertDay(days);
     }
-    public void deleteAllDay(){
+
+    public void deleteDay(Day... days) {
+        dayRepository.deleteDay(days);
+    }
+
+    public void deleteAllDay() {
         dayRepository.deleteAllDay();
     }
+
 }
