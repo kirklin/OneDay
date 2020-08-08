@@ -79,7 +79,7 @@ public class AddDayFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        FragmentActivity activity = requireActivity();
+        final FragmentActivity activity = requireActivity();
         mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
         binding.buttonAddSubmit.setEnabled(false);
         binding.editTextDayTitle.requestFocus();
@@ -111,6 +111,8 @@ public class AddDayFragment extends Fragment {
                 mainViewModel.insertDay(day);
                 Toast toast = Toast.makeText(getContext(),"添加成功",Toast.LENGTH_SHORT);
                 toast.show();
+                InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(binding.getRoot().getWindowToken(), 0);
                 NavController navController = Navigation.findNavController(view);
                 navController.navigateUp();
 

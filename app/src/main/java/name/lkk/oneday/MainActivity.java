@@ -1,13 +1,13 @@
 package name.lkk.oneday;
 
+import android.content.Context;
+import android.os.Bundle;
+import android.view.inputmethod.InputMethodManager;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
-
-import android.content.Context;
-import android.os.Bundle;
-import android.view.inputmethod.InputMethodManager;
 
 public class MainActivity extends AppCompatActivity {
     private NavController navController;
@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(findViewById(R.id.fragment).getWindowToken(), 0);
+
         navController.navigateUp();
         return super.onSupportNavigateUp();
     }

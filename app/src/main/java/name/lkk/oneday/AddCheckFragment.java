@@ -80,7 +80,7 @@ public class AddCheckFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        FragmentActivity activity = requireActivity();
+        final FragmentActivity activity = requireActivity();
         checkViewModel = new ViewModelProvider(this).get(CheckViewModel.class);
         binding.buttonCheckSubmit.setEnabled(false);
         binding.editTextCheckContent.requestFocus();
@@ -113,6 +113,8 @@ public class AddCheckFragment extends Fragment {
                 checkViewModel.insertCheck(check);
                 Toast toast = Toast.makeText(getContext(),"添加成功",Toast.LENGTH_SHORT);
                 toast.show();
+                InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(binding.getRoot().getWindowToken(), 0);
                 NavController navController = Navigation.findNavController(view);
                 navController.navigateUp();
 
