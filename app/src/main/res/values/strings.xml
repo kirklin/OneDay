@@ -15,4 +15,6 @@
     <string name="LabelAddCheck">AddCheck</string>
     <string name="LabelEditCheck">EditCheck</string>
     <string name="buttonEditCheckSubmit">EditCheckSubmit</string>
+    <string name="MenuItemClearData">清空数据</string>
+    <string name="Search">Search</string>
 </resources>

@@ -1,13 +1,20 @@
 package name.lkk.oneday;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -34,6 +41,7 @@ public class DayFragment extends Fragment {
     private MainViewModel mainViewModel;
     private MainAdapter mainAdapter;
     private List<Day> allDays;
+    private LiveData<List<Day>> filteredDays;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -45,6 +53,66 @@ public class DayFragment extends Fragment {
 
     public DayFragment() {
         // Required empty public constructor
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.ClearData:
+                AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+                builder.setTitle("清空数据");
+                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        mainViewModel.deleteAllDay();
+                    }
+                });
+                builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                });
+                builder.create();
+                builder.show();
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + item.getItemId());
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_day_right_upper,menu);
+        SearchView searchView = (SearchView) menu.findItem(R.id.app_bar_search).getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                String pattern = newText.trim();
+                filteredDays = mainViewModel.findDaysWithPattern(pattern);
+                filteredDays.removeObservers(getViewLifecycleOwner()); //防止数据冲突
+                filteredDays.observe(getViewLifecycleOwner(), new Observer<List<Day>>() {
+                    @Override
+                    public void onChanged(List<Day> days) {
+                        int temp = mainAdapter.getItemCount();
+                        allDays = days;
+                        mainAdapter.setAlldays(days);
+                        if (temp != days.size()) {
+                            mainAdapter.notifyDataSetChanged();
+                        }
+                    }
+                });
+                return true;
+            }
+        });
     }
 
     /**
@@ -89,8 +157,8 @@ public class DayFragment extends Fragment {
         mainAdapter = new MainAdapter();
         binding.MainRecycleView.setLayoutManager(new LinearLayoutManager(requireActivity()));
         binding.MainRecycleView.setAdapter(mainAdapter);
-
-        mainViewModel.getAllDayLive().observe(getViewLifecycleOwner(), new Observer<List<Day>>() {
+        filteredDays = mainViewModel.getAllDayLive();
+        filteredDays.observe(getViewLifecycleOwner(), new Observer<List<Day>>() {
             @Override
             public void onChanged(List<Day> days) {
                 int temp = mainAdapter.getItemCount();
@@ -98,6 +166,7 @@ public class DayFragment extends Fragment {
                 mainAdapter.setAlldays(days);
                 if (temp != days.size()) {
                     mainAdapter.notifyDataSetChanged();
+//                    mainAdapter.notifyItemChanged(0);
                 }
             }
         });

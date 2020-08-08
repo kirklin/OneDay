@@ -86,7 +86,7 @@ public class DayRepository {
         }
         @Override
         protected Void doInBackground(Void... voids) {
-            dayDao.deleteDay();
+            dayDao.deleteAllDays();
             return null;
         }
     }
