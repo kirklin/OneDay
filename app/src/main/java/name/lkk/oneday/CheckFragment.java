@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -12,14 +13,17 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
 import name.lkk.oneday.adapter.CheckAdapter;
 import name.lkk.oneday.data.Check;
+import name.lkk.oneday.databinding.FragmentCheckBinding;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,10 +31,11 @@ import name.lkk.oneday.data.Check;
  * create an instance of this fragment.
  */
 public class CheckFragment extends Fragment {
-    CheckViewModel checkViewModel;
-    RecyclerView recyclerView;
-    CheckAdapter checkAdapter;
-    long dayid=1;
+    private CheckViewModel checkViewModel;
+    private FragmentCheckBinding binding;
+    private CheckAdapter checkAdapter;
+    private List<Check> allChecks;
+    private long dayid = 1;
 
     FloatingActionButton floatingActionButton;
     // TODO: Rename parameter arguments, choose names that match
@@ -77,40 +82,60 @@ public class CheckFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_check, container, false);
+        binding = FragmentCheckBinding.inflate(inflater,container,false);
+        return binding.getRoot();
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         checkViewModel = new ViewModelProvider(this).get(CheckViewModel.class);
-        recyclerView = requireActivity().findViewById(R.id.CheckRecycleView);
         checkAdapter = new CheckAdapter();
         dayid = getArguments().getLong("arg_dayid");
-
-        recyclerView.setLayoutManager(new GridLayoutManager(requireActivity(),2));
-        recyclerView.setAdapter(checkAdapter);
+        binding.CheckRecycleView.setLayoutManager(new GridLayoutManager(requireActivity(), 2));
+        binding.CheckRecycleView.setAdapter(checkAdapter);
         checkViewModel.getAllCheckLive(dayid).observe(getViewLifecycleOwner(), new Observer<List<Check>>() {
             @Override
             public void onChanged(List<Check> checks) {
                 int temp = checkAdapter.getItemCount();
+                allChecks =checks;
                 checkAdapter.setAllchecks(checks);
                 if (temp != checks.size()) {
                     checkAdapter.notifyDataSetChanged();
                 }
             }
         });
-        floatingActionButton = requireActivity().findViewById(R.id.floatingActionButton2);
+        floatingActionButton = binding.floatingActionButton2;
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//
-               final Bundle bundle = new Bundle();
-               bundle.putLong("arg_dayid",dayid);
-
+                final Bundle bundle = new Bundle();
+                bundle.putLong("arg_dayid", dayid);
                 NavController navController = Navigation.findNavController(view);
-                navController.navigate(R.id.action_checkFragment_to_addCheckFragment,bundle);
+                navController.navigate(R.id.action_checkFragment_to_addCheckFragment, bundle);
             }
         });
+
+        //滑动删除
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.START | ItemTouchHelper.END) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                final Check CheckToDelete = allChecks.get(viewHolder.getAdapterPosition());
+                checkViewModel.deleteCheck(CheckToDelete);
+                Snackbar.make(binding.getRoot(), "删除了一天", Snackbar.LENGTH_LONG)
+                        .setAction("撤销", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                checkViewModel.insertCheck(CheckToDelete);
+                            }
+                        }).show();
+            }
+        }).attachToRecyclerView(binding.CheckRecycleView);
+
     }
 }

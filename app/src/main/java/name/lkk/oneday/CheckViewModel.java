@@ -26,5 +26,7 @@ public class CheckViewModel extends AndroidViewModel {
     public void updateCheck(Check... checks){
         checkRepository.updateCheck(checks);
     }
-
+    public void deleteCheck(Check... checks){
+        checkRepository.deleteCheck(checks);
+    }
 }
