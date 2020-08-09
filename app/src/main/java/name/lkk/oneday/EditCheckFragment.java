@@ -3,10 +3,14 @@ package name.lkk.oneday;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -39,6 +43,7 @@ public class EditCheckFragment extends Fragment {
 
     public EditCheckFragment() {
         // Required empty public constructor
+        setHasOptionsMenu(true);
     }
 
     /**
@@ -60,6 +65,33 @@ public class EditCheckFragment extends Fragment {
     }
 
     @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.MenuItemEditCheckDone:
+                String CheckTitle = binding.editTextCheckTitle.getText().toString();
+                String CheckContent = binding.editTextCheckContent.getText().toString();
+                thisCheck.setTitle(CheckTitle);
+                thisCheck.setContents(CheckContent);
+                checkViewModel.updateCheck(thisCheck);
+                Snackbar.make(binding.getRoot(),"修改成功",Snackbar.LENGTH_LONG).show();
+                InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(binding.getRoot().getWindowToken(), 0);
+                NavController navController = Navigation.findNavController(binding.getRoot());
+                navController.navigateUp();
+                break;
+
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_edit_check_right_upper, menu);
+
+    }
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
@@ -74,7 +106,6 @@ public class EditCheckFragment extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentEditCheckBinding.inflate(inflater, container, false);
         return binding.getRoot();
-
     }
 
     @Override
@@ -82,37 +113,9 @@ public class EditCheckFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         checkViewModel = new ViewModelProvider(this).get(CheckViewModel.class);
         thisCheck = (Check) getArguments().getSerializable("check");
-//        changeCheck = new Check(thisCheck.getDayCreatorId(),thisCheck.getTitle(),thisCheck.getContents());
-//        changeCheck.setCheckId(thisCheck.getCheckId());
         binding.editTextCheckTitle.setText(thisCheck.getTitle());
         binding.editTextCheckContent.setText(thisCheck.getContents());
-        binding.buttonEditCheckSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                binding.editTextCheckContent.requestFocus();
-                String CheckTitle = binding.editTextCheckTitle.getText().toString();
-                String CheckContent = binding.editTextCheckContent.getText().toString();
-                thisCheck.setTitle(CheckTitle);
-                thisCheck.setContents(CheckContent);
-                checkViewModel.updateCheck(thisCheck);
-//                changeCheck.setTitle(CheckTitle);
-//                changeCheck.setContents(CheckContent);
-//                checkViewModel.updateCheck(changeCheck);
-                Snackbar.make(binding.getRoot(),"修改成功",Snackbar.LENGTH_LONG)
-//                        .setAction("撤销", new View.OnClickListener() {
-//                            @Override
-//                            public void onClick(View view) {
-//                                checkViewModel.updateCheck(thisCheck);
-//                            }
-//                        })
-                        .show();
-                InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(binding.getRoot().getWindowToken(), 0);
-
-                NavController navController = Navigation.findNavController(view);
-                navController.navigateUp();
-            }
-        });
+        binding.editTextCheckContent.requestFocus();
 
     }
 }

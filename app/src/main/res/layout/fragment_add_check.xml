@@ -36,34 +36,17 @@
         app:layout_constraintTop_toTopOf="@+id/guideline7"
         android:autofillHints="" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline15"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.5" />
-
     <EditText
         android:id="@+id/editTextCheckContent"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:autofillHints=""
         android:ems="10"
         android:hint="@string/editTextCheckContent"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/guideline15"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/editTextCheckTitle"
         app:layout_constraintStart_toStartOf="@+id/editTextCheckTitle"
-        app:layout_constraintTop_toTopOf="@+id/guideline13"
-        android:autofillHints="" />
-
-    <Button
-        android:id="@+id/buttonCheckSubmit"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/buttonCheckSubmit"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline15" />
+        app:layout_constraintTop_toTopOf="@+id/guideline13" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

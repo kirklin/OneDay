@@ -2,13 +2,15 @@ package name.lkk.oneday;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -40,6 +42,7 @@ public class AddDayFragment extends Fragment {
 
     public AddDayFragment() {
         // Required empty public constructor
+        setHasOptionsMenu(true);
     }
 
     /**
@@ -61,6 +64,32 @@ public class AddDayFragment extends Fragment {
     }
 
     @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.MenuItemAddDayDone:
+                String DayTitle = binding.editTextDayTitle.getText().toString().trim();
+                Day day = new Day(DayTitle);
+                mainViewModel.insertDay(day);
+                Snackbar.make(binding.getRoot(), "添加成功", Snackbar.LENGTH_SHORT).show();
+                InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(binding.getRoot().getWindowToken(), 0);
+                NavController navController = Navigation.findNavController(binding.getRoot());
+                navController.navigateUp();
+                break;
+
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_add_day_right_upper, menu);
+
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
@@ -73,7 +102,7 @@ public class AddDayFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        binding = FragmentAddDayBinding.inflate(inflater,container,false);
+        binding = FragmentAddDayBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
@@ -82,41 +111,25 @@ public class AddDayFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         final FragmentActivity activity = requireActivity();
         mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
-        binding.buttonAddSubmit.setEnabled(false);
         binding.editTextDayTitle.requestFocus();
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(binding.editTextDayTitle,0);
-        TextWatcher textWatcher = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                String Day =binding.editTextDayTitle.getText().toString().trim();
-                binding.buttonAddSubmit.setEnabled(!Day.isEmpty());
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        };
-        binding.editTextDayTitle.addTextChangedListener(textWatcher);
-        binding.buttonAddSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String DayTitle = binding.editTextDayTitle.getText().toString().trim();
-                Day day = new Day(DayTitle);
-                mainViewModel.insertDay(day);
-                Snackbar.make(binding.getRoot(),"添加成功",Snackbar.LENGTH_SHORT).show();
-                InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(binding.getRoot().getWindowToken(), 0);
-                NavController navController = Navigation.findNavController(view);
-                navController.navigateUp();
-
-            }
-        });
+        imm.showSoftInput(binding.editTextDayTitle, 0);
+//        TextWatcher textWatcher = new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//                String Day = binding.editTextDayTitle.getText().toString().trim();
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable editable) {
+//
+//            }
+//        };
+//        binding.editTextDayTitle.addTextChangedListener(textWatcher);
     }
 }
