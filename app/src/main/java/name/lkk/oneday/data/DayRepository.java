@@ -10,7 +10,7 @@ import java.util.List;
 public class DayRepository {
     private DayDao dayDao;
     private LiveData<List<Day>>allDayLive;
-    private long dayId;
+
     public DayRepository(Context context) {
         AppDatabase appDatabase = AppDatabase.getDatabase(context.getApplicationContext());
         dayDao = appDatabase.getDayDao();
@@ -22,10 +22,7 @@ public class DayRepository {
         return allDayLive;
     }
 
-    public long getDayId(long id) {
-        dayId = dayDao.getDayId(id);
-        return dayId;
-    }
+
 
     public LiveData<List<Day>> findDaysWithPattern(String pattern){
         return dayDao.findDaysWithPattern("%"+pattern+"%");

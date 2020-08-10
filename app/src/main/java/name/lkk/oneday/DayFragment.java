@@ -1,7 +1,10 @@
 package name.lkk.oneday;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -14,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -41,7 +45,10 @@ import name.lkk.oneday.databinding.FragmentDayBinding;
  * Use the {@link DayFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+
 public class DayFragment extends Fragment {
+    private final int REQUEST_WRITE_EXTERNAL_STORAGE = 1;
+    private final int REQUEST_READ_EXTERNAL_STORAGE = 2;
     private FragmentDayBinding binding;
     private MainViewModel mainViewModel;
     private MainAdapter mainAdapter;
@@ -63,7 +70,7 @@ public class DayFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.ClearData:
                 AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
                 builder.setTitle("清空数据");
@@ -82,6 +89,27 @@ public class DayFragment extends Fragment {
                 builder.create();
                 builder.show();
                 break;
+            case R.id.outputJson:
+
+                if (ContextCompat.checkSelfPermission(requireContext(),
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    String[] permissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                    requestPermissions(permissions, REQUEST_WRITE_EXTERNAL_STORAGE);
+                } else {
+                    mainViewModel.saveData(requireContext());
+                }
+
+                break;
+            case R.id.inputJson:
+                if (ContextCompat.checkSelfPermission(requireContext(),
+                        Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    String[] permissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE};
+                    requestPermissions(permissions, REQUEST_READ_EXTERNAL_STORAGE);
+                } else {
+                    mainViewModel.readData(requireContext());
+                }
+
+                break;
             default:
                 throw new IllegalStateException("Unexpected value: " + item.getItemId());
         }
@@ -89,9 +117,37 @@ public class DayFragment extends Fragment {
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case REQUEST_WRITE_EXTERNAL_STORAGE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    mainViewModel.saveData(requireContext());
+                } else {
+                    Toast.makeText(requireContext(), "无访问权限，导出失败", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case REQUEST_READ_EXTERNAL_STORAGE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    mainViewModel.readData(requireContext());
+                } else {
+                    Toast.makeText(requireContext(), "无访问权限，导入失败", Toast.LENGTH_SHORT).show();
+                }
+                break;
+
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+
+    @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu_day_right_upper,menu);
+        inflater.inflate(R.menu.menu_day_right_upper, menu);
         SearchView searchView = (SearchView) menu.findItem(R.id.app_bar_search).getActionView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -171,7 +227,6 @@ public class DayFragment extends Fragment {
                 mainAdapter.setAlldays(days);
                 if (temp != days.size()) {
                     mainAdapter.notifyDataSetChanged();
-//                    mainAdapter.notifyItemChanged(0);
                 }
             }
         });
@@ -192,9 +247,9 @@ public class DayFragment extends Fragment {
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                final Day dayToDelete= allDays.get(viewHolder.getAdapterPosition());
+                final Day dayToDelete = allDays.get(viewHolder.getAdapterPosition());
                 mainViewModel.deleteDay(dayToDelete);
-                Snackbar.make(binding.getRoot(),"删除了一天",Snackbar.LENGTH_LONG)
+                Snackbar.make(binding.getRoot(), "删除了一天", Snackbar.LENGTH_LONG)
                         .setAction("撤销", new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
@@ -202,38 +257,39 @@ public class DayFragment extends Fragment {
                             }
                         }).show();
             }
-            
-            Drawable icon = ContextCompat.getDrawable(requireActivity(),R.drawable.ic_baseline_delete_forever_24);
+
+            Drawable icon = ContextCompat.getDrawable(requireActivity(), R.drawable.ic_baseline_delete_forever_24);
             Drawable background = new ColorDrawable(Color.LTGRAY);
+
             @Override
             public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
                 super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
                 View itemView = viewHolder.itemView;
                 int iconMargin = (itemView.getHeight() - icon.getIntrinsicHeight()) / 2;
 
-                int iconLeft,iconRight,iconTop,iconBottom;
-                int backTop,backBottom,backLeft,backRight;
+                int iconLeft, iconRight, iconTop, iconBottom;
+                int backTop, backBottom, backLeft, backRight;
                 backTop = itemView.getTop();
                 backBottom = itemView.getBottom();
-                iconTop = itemView.getTop() + (itemView.getHeight() - icon.getIntrinsicHeight()) /2;
+                iconTop = itemView.getTop() + (itemView.getHeight() - icon.getIntrinsicHeight()) / 2;
                 iconBottom = iconTop + icon.getIntrinsicHeight();
                 if (dX > 0) {
                     backLeft = itemView.getLeft();
-                    backRight = itemView.getLeft() + (int)dX;
-                    background.setBounds(backLeft,backTop,backRight,backBottom);
-                    iconLeft = itemView.getLeft() + iconMargin ;
+                    backRight = itemView.getLeft() + (int) dX;
+                    background.setBounds(backLeft, backTop, backRight, backBottom);
+                    iconLeft = itemView.getLeft() + iconMargin;
                     iconRight = iconLeft + icon.getIntrinsicWidth();
-                    icon.setBounds(iconLeft,iconTop,iconRight,iconBottom);
-                } else if (dX < 0){
+                    icon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
+                } else if (dX < 0) {
                     backRight = itemView.getRight();
-                    backLeft = itemView.getRight() + (int)dX;
-                    background.setBounds(backLeft,backTop,backRight,backBottom);
-                    iconRight = itemView.getRight()  - iconMargin;
+                    backLeft = itemView.getRight() + (int) dX;
+                    background.setBounds(backLeft, backTop, backRight, backBottom);
+                    iconRight = itemView.getRight() - iconMargin;
                     iconLeft = iconRight - icon.getIntrinsicWidth();
-                    icon.setBounds(iconLeft,iconTop,iconRight,iconBottom);
+                    icon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
                 } else {
-                    background.setBounds(0,0,0,0);
-                    icon.setBounds(0,0,0,0);
+                    background.setBounds(0, 0, 0, 0);
+                    icon.setBounds(0, 0, 0, 0);
                 }
                 background.draw(c);
                 icon.draw(c);

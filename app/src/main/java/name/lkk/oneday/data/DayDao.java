@@ -26,10 +26,6 @@ public interface DayDao {
     @Query("SELECT * FROM Day ORDER BY dayId DESC")
     LiveData<List<Day>> getAllDayLive();
 
-    @Query("SELECT dayId FROM Day WHERE dayId=:id")
-    long getDayId(long id);
-
-
     @Query("SELECT * FROM Day WHERE day_title LIKE :pattern ORDER BY dayId DESC")
     LiveData<List<Day>>findDaysWithPattern(String pattern);
 }

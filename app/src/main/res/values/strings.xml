@@ -21,4 +21,6 @@
     <string name="MenuItemDone">Done</string>
     <string name="MenuItemAddCheckDone">Done</string>
     <string name="MenuItemEditCheckDone">Done</string>
+    <string name="menuItemOutputData">OutputData</string>
+    <string name="menuItemInputData">InputData</string>
 </resources>

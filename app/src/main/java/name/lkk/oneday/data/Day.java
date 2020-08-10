@@ -1,14 +1,15 @@
 package name.lkk.oneday.data;
 
-        import androidx.room.ColumnInfo;
-        import androidx.room.Entity;
-        import androidx.room.PrimaryKey;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
-        import java.sql.Date;
-        import java.util.Calendar;
+import java.io.Serializable;
+
 
 @Entity
-public class Day {
+public class Day implements Serializable {
+    private static final long serialVersionUID = -7990954864728722480L;
     @PrimaryKey(autoGenerate = true)
     private long dayId;
     @ColumnInfo(name = "day_title")
@@ -17,6 +18,7 @@ public class Day {
     private int weather;
     @ColumnInfo(name = "day_mood")
     private int mood;
+
 
     public Day(String title) {
         this.title = title;

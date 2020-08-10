@@ -11,4 +11,10 @@
         android:title="@string/Search"
         app:actionViewClass="android.widget.SearchView"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/outputJson"
+        android:title="@string/menuItemOutputData" />
+    <item
+        android:id="@+id/inputJson"
+        android:title="@string/menuItemInputData" />
 </menu>

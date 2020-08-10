@@ -8,6 +8,7 @@ import java.io.Serializable;
 
 @Entity
 public class Check implements Serializable {
+    private static final long serialVersionUID = -6627071114216442366L;
     @PrimaryKey(autoGenerate = true)
     private long checkId;
     //关联Day
